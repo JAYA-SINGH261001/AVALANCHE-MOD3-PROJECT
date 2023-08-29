@@ -1,25 +1,46 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+// Uncomment this line to use console.log
+// import "hardhat/console.sol";
+/*
+       REQUIREMENTS
+    1. Your contract will have public variables that store the details about your coin (Token Name, Token Abbrv., Total Supply)
+    2. Your contract will have a mapping of addresses to balances (address => uint)
+    3. You will have a mint function that takes two parameters: an address and a value. 
+       The function then increases the total supply by that number and increases the balance 
+       of the “sender” address by that amount
+    4. Your contract will have a burn function, which works the opposite of the mint function, as it will destroy tokens. 
+       It will take an address and value just like the mint functions. It will then deduct the value from the total supply 
+       and from the balance of the “sender”.
+    5. Lastly, your burn function should have conditionals to make sure the balance of "sender" is greater than or equal 
+       to the amount that is supposed to be burned.
+*/
+contract  MyToken {
+// public variables here
+    string public tokenName = "jaya";
+    string public tokenAbbrv = "singh";
+    uint public totalSupply = 0;
+//mapping variables here
+    mapping (address => uint) public balances;
 
-contract MyToken is ERC20, Ownable {
-    constructor() ERC20("MyToken", "MTK") {
-        _mint(msg.sender, 1000000 * 10**18); // Mint initial tokens to the contract deployer
+//mint function code here increases balances
+ function mint (address _address, uint _value) public{
+   totalSupply += _value;
+   balances[_address] += _value;
+}
+//burn function code here opposite of mint function
+function burn (address _address, uint _value) public{
+    if(balances[_address] >= _value){
+       totalSupply -= _value;
+       balances[_address] -= _value;
     }
-
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
-    }
-
-    function burn(uint256 amount) public {
-        _burn(msg.sender, amount);
-    }
-    function transfer(address to, uint256 amount) public {
+  }
+   function transfer(address to, uint256 amount) public {
         require(balances[msg.sender] >= amount, "Insufficient balance");
         balances[msg.sender] -= amount;
         balances[to] += amount;
     }
 }
+
 
