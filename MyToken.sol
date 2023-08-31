@@ -21,11 +21,14 @@ contract  MyToken {
     string public tokenName = "jaya";
     string public tokenAbbrv = "singh";
     uint public totalSupply = 0;
+    constructor() {
+        owner = msg.sender;
+    }
 //mapping variables here
     mapping (address => uint) public balances;
 
 //mint function code here increases balances
- function mint (address _address, uint _value) public{
+ function mint (address _address, uint _value) public onlyOwner{
    totalSupply += _value;
    balances[_address] += _value;
 }
