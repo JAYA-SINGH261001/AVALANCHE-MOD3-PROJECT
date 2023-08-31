@@ -21,11 +21,18 @@ contract  MyToken {
     string public tokenName = "jaya";
     string public tokenAbbrv = "singh";
     uint public totalSupply = 0;
-    constructor() {
-        owner = msg.sender;
-    }
+  
 //mapping variables here
     mapping (address => uint) public balances;
+ constructor() {
+        owner = msg.sender; // Set the contract deployer as the owner
+    }
+    
+    // Modifier that only allows the owner to perform the action
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can call this function");
+        _;
+    }
 
 //mint function code here increases balances
  function mint (address _address, uint _value) public onlyOwner{
