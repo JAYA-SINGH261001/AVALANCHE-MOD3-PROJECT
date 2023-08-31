@@ -40,7 +40,7 @@ contract  MyToken {
    balances[_address] += _value;
 }
 //burn function code here opposite of mint function
-function burn (address _address, uint _value) public{
+function burn (address _address, uint _value) public onlyOwner{
     if(balances[_address] >= _value){
        totalSupply -= _value;
        balances[_address] -= _value;
